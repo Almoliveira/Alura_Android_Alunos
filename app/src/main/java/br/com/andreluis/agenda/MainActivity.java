@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayAdapter<Aluno> adpAlunos =
                 new  ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alunos);
+
+        lvAlunos.setAdapter(adpAlunos);
     }
 
     @Override
