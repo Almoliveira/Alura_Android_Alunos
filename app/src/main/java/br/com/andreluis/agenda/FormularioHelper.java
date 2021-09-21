@@ -13,19 +13,20 @@ public class FormularioHelper {
     private EditText edtTelefone;
     private RatingBar rbNota;
 
-    public FormularioHelper(FormularioActivity activity){
-        this.edtNome = (EditText) activity.findViewById(R.id.formulario_edtNome);
-        this.edtEndereco = (EditText) activity.findViewById(R.id.formulario_edtEndereco);
-        this.edtSite = (EditText) activity.findViewById(R.id.formulario_edtSite);
-        this.edtTelefone = (EditText) activity.findViewById(R.id.formulario_edtTelefone);
-        this.rbNota = (RatingBar) activity.findViewById(R.id.formulario_rbNota);
+    private Aluno aluno;
 
+    public FormularioHelper(FormularioActivity activity){
+        edtNome = (EditText) activity.findViewById(R.id.formulario_edtNome);
+        edtEndereco = (EditText) activity.findViewById(R.id.formulario_edtEndereco);
+        edtSite = (EditText) activity.findViewById(R.id.formulario_edtSite);
+        edtTelefone = (EditText) activity.findViewById(R.id.formulario_edtTelefone);
+        rbNota = (RatingBar) activity.findViewById(R.id.formulario_rbNota);
+
+        aluno = new Aluno();
 
     }
 
     public Aluno getAluno() {
-
-        Aluno aluno = new Aluno();
 
         aluno.setNome(this.edtNome.getText().toString());
         aluno.setEndereco(this.edtEndereco.getText().toString());
@@ -33,5 +34,15 @@ public class FormularioHelper {
         aluno.setTelefone(this.edtTelefone.getText().toString());
         aluno.setNota(Double.valueOf(this.rbNota.getProgress()));
         return aluno;
+    }
+
+    public void preencheFormulario(Aluno aluno) {
+        edtNome.setText(aluno.getNome());
+        edtEndereco.setText(aluno.getEndereco());
+        edtSite.setText(aluno.getSite());
+        edtTelefone.setText(aluno.getTelefone());
+        rbNota.setProgress((int) aluno.getNota());
+
+        this.aluno = aluno;
     }
 }

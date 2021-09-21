@@ -3,6 +3,7 @@ package br.com.andreluis.agenda;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.media.Rating;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,7 +21,7 @@ import br.com.andreluis.agenda.modelo.Aluno;
 public class FormularioActivity extends AppCompatActivity {
 
     FormularioHelper helper;
-    Aluno aluno;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,18 @@ public class FormularioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_formulario);
 
         helper = new FormularioHelper(this);
+
+        Intent intent = getIntent();
+
+        Aluno aluno = (Aluno) intent.getSerializableExtra("aluno");
+
+        if(aluno != null){
+
+            helper.preencheFormulario(aluno);
+        }
+
+
+
 
     }
 
@@ -44,12 +57,26 @@ public class FormularioActivity extends AppCompatActivity {
 
         switch(item.getItemId()){
             case R.id.menu_formulario_ok:
-                aluno = this.helper.getAluno();
-                Toast.makeText(FormularioActivity.this,
-                        "Aluno " + aluno.getNome() + " salvo " +
-                                "corretamente!", Toast.LENGTH_SHORT).show();
+                Aluno aluno = helper.getAluno();
+
                 AlunoDAO dao = new AlunoDAO(this);
-                dao.Insere(aluno);
+
+                //Int sempre usa 0
+                if(aluno.getId() != 0){
+                    dao.altera(aluno);
+                    Toast.makeText(FormularioActivity.this,
+                            "Aluno " + aluno.getNome() + " atualizado " +
+                                    "corretamente!", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    dao.Insere(aluno);
+
+                    Toast.makeText(FormularioActivity.this,
+                            "Aluno " + aluno.getNome() + " salvo " +
+                                    "corretamente!", Toast.LENGTH_SHORT).show();
+
+                }
+
                 dao.close();
 
                 finish();
@@ -63,4 +90,6 @@ public class FormularioActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

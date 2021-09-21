@@ -1,6 +1,8 @@
 package br.com.andreluis.agenda.modelo;
 
-public class Aluno {
+import java.io.Serializable;
+
+public class Aluno implements Serializable {
 
     private int id;
     private String nome;

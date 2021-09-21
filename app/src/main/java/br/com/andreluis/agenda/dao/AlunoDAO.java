@@ -1,19 +1,17 @@
 package br.com.andreluis.agenda.dao;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import br.com.andreluis.agenda.modelo.Aluno;
 
@@ -51,13 +49,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
         final SQLiteDatabase db = getWritableDatabase();
 
-        ContentValues cv = new ContentValues();
-
-        cv.put("nome", aluno.getNome());
-        cv.put("endereco", aluno.getEndereco());
-        cv.put("telefone", aluno.getTelefone());
-        cv.put("site", aluno.getSite());
-        cv.put("nota", aluno.getNota());
+        ContentValues cv =  pegaDadosAluno(aluno);
 
         db.insert("ALUNOS", null, cv);
     }
@@ -88,5 +80,36 @@ public class AlunoDAO extends SQLiteOpenHelper {
             throw er;
         }
 
+    }
+
+    public void deleta(Aluno aluno) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String[] params = {String.valueOf(aluno.getId())};
+        db.delete("Alunos", "id = ?", params);
+    }
+
+    public void altera(Aluno aluno) {
+        SQLiteDatabase db = getWritableDatabase();
+
+       ContentValues cv =  pegaDadosAluno(aluno);
+
+       String[] params = {String.valueOf(aluno.getId())};
+       db.update("Alunos",cv,"id = ?", params);
+
+
+    }
+
+    @NonNull
+    private ContentValues pegaDadosAluno(Aluno aluno) {
+        ContentValues cv = new ContentValues();
+
+        cv.put("nome", aluno.getNome());
+        cv.put("endereco", aluno.getEndereco());
+        cv.put("telefone", aluno.getTelefone());
+        cv.put("site", aluno.getSite());
+        cv.put("nota", aluno.getNota());
+
+        return cv;
     }
 }
